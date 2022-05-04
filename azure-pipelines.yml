@@ -14,15 +14,15 @@ steps:
 - task: TerraformInstaller@0
   inputs:
     terraformVersion: 'latest'
-- task: TerraformCLI@0
-  displayName: Terraform Init
+- task: TerraformTaskV2@2
   inputs:
+    provider: 'azurerm'
     command: 'init'
-    allowTelemetryCollection: true
+    backendServiceArm: 'Visual Studio Professional Subscription(5cecbbaa-a38e-4827-8324-30600cfe4b44)'
 
-- task: TerraformCLI@0
-  displayName: Terraform Plan
+
+- task: TerraformTaskV2@2
   inputs:
+    provider: 'azurerm'
     command: 'plan'
-    environmentServiceName: 'app-service-connection'
-    allowTelemetryCollection: false
+    environmentServiceNameAzureRM: 'Visual Studio Professional Subscription(5cecbbaa-a38e-4827-8324-30600cfe4b44)'
