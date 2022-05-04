@@ -6,7 +6,8 @@
 trigger:
 - none
 
-pool: "Azure Pipelines"
+pool: 
+  vmImage: "Windows-latest"
 
 steps:
 
