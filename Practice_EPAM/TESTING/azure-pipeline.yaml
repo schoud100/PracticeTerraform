@@ -1,0 +1,107 @@
+name: Terraform-yaml-pipeline
+
+# Define Variables for Environments
+variables:
+- name: Environment
+  value: dev
+
+  
+# Only run against develop
+trigger:
+- none
+
+pool: "Azure Pipelines"
+
+# Don't run against PRs
+pr: none
+
+stages :
+  - stage: init
+    jobs:
+    - job: validate_init
+      continueOnError: false
+      steps:
+      - task: TerraformInstaller@0
+        displayName: 'validate'
+        inputs:
+          terraformVersion: '0.13.3'
+
+      - task: TerraformTaskV1@0
+        displayName: 'init'
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          backendServiceArm: 'terraform'
+          backendAzureRmResourceGroupName: 'terraform'
+          backendAzureRmStorageAccountName: 'terraformbpk'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'dev.terraform.tfstate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+      - task: TerraformTaskV1@0
+        displayName: 'validate'
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
+          
+  - stage: plan
+    dependsOn: [init]
+    condition: succeeded('init')
+    jobs:
+      - job: terraform_plan
+        steps:
+              - checkout: self
+              - task: TerraformInstaller@0
+                displayName: 'install'
+                inputs:
+                  terraformVersion: '0.13.3'
+              - task: TerraformTaskV1@0
+                displayName: 'init'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'init'
+                  backendServiceArm: 'terraform'
+                  backendAzureRmResourceGroupName: 'terraform'
+                  backendAzureRmStorageAccountName: 'terraformbpk'
+                  backendAzureRmContainerName: 'tfstate'
+                  backendAzureRmKey: 'dev.terraform.tfstate'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)'
+              - task: TerraformTaskV1@0
+                displayName: 'plan'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'plan'
+                  commandOptions: '-input=false -var-file="$(Environment).tfvars"'
+                  environmentServiceNameAzureRM: 'terraform'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+  - stage: apply
+    dependsOn: [plan]
+    condition: succeeded('plan')
+    jobs:
+      - job: terraform_apply
+        steps:
+              - checkout: self
+              - task: TerraformInstaller@0
+                displayName: 'install'
+                inputs:
+                  terraformVersion: '0.13.3'
+              - task: TerraformTaskV1@0
+                displayName: 'init'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'init'
+                  backendServiceArm: 'terraform'
+                  backendAzureRmResourceGroupName: 'terraform'
+                  backendAzureRmStorageAccountName: 'terraformbpk'
+                  backendAzureRmContainerName: 'tfstate'
+                  backendAzureRmKey: 'dev.terraform.tfstate' 
+                  workingDirectory: '$(System.DefaultWorkingDirectory)'
+              - task: TerraformTaskV1@0
+                displayName: 'apply'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'apply'
+                  commandOptions: '-input=false -auto-approve -var-file="$(Environment).tfvars"'
+                  environmentServiceNameAzureRM: 'terraform'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)'
