@@ -1,5 +1,5 @@
 terraform {
-  backend = "azurerm" {
+  backend "azurerm" {
     resource_group_name = "TfstateRG01"
     storage_account_name = "tfstatestoraccount"
     container_name = "tfstate"
@@ -21,9 +21,6 @@ provider "azurerm" {
   features {}
 }
 
-data "azuread_service_principal" "aks_principal" {
-  application_id = "c18d5f03-cac3-49c5-8628-cf729166160d7"
-}
 
 
 data "azurerm_client_config" "current" {}
@@ -82,10 +79,10 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     }
   }
 
- // service_principal {
- //   client_id     = var.clientid
- //   client_secret = var.spnkvsecret
- // }
+  service_principal {
+    client_id     = var.clientid
+    client_secret = var.spnkvsecret
+  }
   
     default_node_pool {
           name            = "default"
