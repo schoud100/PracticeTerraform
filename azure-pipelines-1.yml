@@ -27,6 +27,7 @@ stages :
           backendAzureRmStorageAccountName: 'tfstatestoraccount'
           backendAzureRmContainerName: 'tfstate'
           backendAzureRmKey: 'terraform.tfstate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
       - task: TerraformTaskV2@2
         inputs:
           provider: 'azurerm'
@@ -52,7 +53,7 @@ stages :
                   backendAzureRmStorageAccountName: 'tfstatestoraccount'
                   backendAzureRmContainerName: 'tfstate'
                   backendAzureRmKey: 'terraform.tfstate'
-
+                  workingDirectory: '$(System.DefaultWorkingDirectory)'
               - task: TerraformTaskV2@2
                 inputs:
                   provider: 'azurerm'
