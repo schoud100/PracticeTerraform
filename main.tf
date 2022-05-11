@@ -4,6 +4,12 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "=2.63.0"
     }
+  backend = "azurerm" {
+    resource_group_name = "TfstateRG01"
+    storage_account_name = "tfstatestoraccount"
+    container_name = ""
+    key = "terraform.tfstate"   // name of any file created under container
+  }
   }
 }
 
