@@ -7,7 +7,7 @@ terraform {
   backend = "azurerm" {
     resource_group_name = "TfstateRG01"
     storage_account_name = "tfstatestoraccount"
-    container_name = ""
+    container_name = "tfstate"
     key = "terraform.tfstate"   // name of any file created under container
   }
   }
