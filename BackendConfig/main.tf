@@ -30,7 +30,7 @@ resource "azurerm_storage_account" "storaccount" {
 
 #Create Azure Blob Container
 resource "azurerm_storage_container" "blobcontainer" {
-  name                  = "vhds"
+  name                  = "tfstate"
   storage_account_name  = azurerm_storage_account.storaccount.name
   container_access_type = "private"
   
