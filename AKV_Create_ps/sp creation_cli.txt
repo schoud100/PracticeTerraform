@@ -1,0 +1,42 @@
+az group create --location CentralIndia --name TestPractice
+{
+  "id": "/subscriptions/5cecbbaa-a38e-4827-8324-30600cfe4b44/resourceGroups/TestPractice",
+  "location": "centralindia",
+  "managedBy": null,
+  "name": "TestPractice",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null,
+  "type": "Microsoft.Resources/resourceGroups"
+} 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+az role assignment delete --assignee c18d5f03-cac3-49c5-8628-cf729166160d --role Contributor --scope /subscriptions/5cecbbaa-a38e-4827-8324-30600cfe4b44/resourceGroups/TestPractice 
+               
+az ad sp create-for-rbac -n "PracticeApp" --role Owner --scopes /subscriptions/5cecbbaa-a38e-4827-8324-30600cfe4b44/resourceGroups/TestPractice 
+
+{
+  "appId": "c18d5f03-cac3-49c5-8628-cf729166160d",
+  "displayName": "PracticeApp",
+  "password": "P-X5kNoQCpLnBh7gxC31DBGMb6k9vn2OU~",
+  "tenant": "b41b72d0-4e9f-4c26-8a69-f949f367c91d"
+}
+
+Object ID: a7d99beb-e9b4-4221-8885-c773c2112a89
+
+Get-AzADServicePrincipal -DisplayName PracticeApp
+
+DisplayName Id                                   AppId
+----------- --                                   -----
+PracticeApp cba47227-10d3-442a-baf6-868de44f73e6 c18d5f03-cac3-49c5-8628-cf729166160d
+
+
+
+---------------------------------------------
+
+#Add-AzureKeyVaultKey -VaultName 'aks-keyvault-cluster' -Name 'MyFirstKey' -Destination 'Software' -> To create Key
+
+To create and add ssh key to keyvault->
+
+ssh-keygen  -f ~/.ssh/id_rsa_terraform
+Set-AzKeyVaultSecret -VaultName aks-keyvault-cluster -SecretName aks-secret -SecretValue (ConvertTo-SecureString (Get-Content ~/.ssh/id_rsa_terraform.pub -Raw) -force -AsPlainText)
