@@ -5,7 +5,7 @@
 variable "kube_resource_group_name" {
   type        = string
   description = "The name of an existing Resource Group"
-  default = "TestPractice"
+  default = "TfstateRG01"
 }
 
 variable "vaccine_location" {
