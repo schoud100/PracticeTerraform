@@ -16,8 +16,13 @@ terraform {
 provider "azurerm" {
   subscription_id = "5cecbbaa-a38e-4827-8324-30600cfe4b44"
   tenant_id       = "b41b72d0-4e9f-4c26-8a69-f949f367c91d"  
- 
+  client_id       = var.clientid
+  client_secret   = var.spnkvsecret
   features {}
+}
+
+data "azuread_service_principal" "aks_principal" {
+  application_id = "c18d5f03-cac3-49c5-8628-cf729166160d7"
 }
 
 
@@ -77,10 +82,10 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     }
   }
 
-  service_principal {
-    client_id     = var.clientid
-    client_secret = var.spnkvsecret
-  }
+ // service_principal {
+ //   client_id     = var.clientid
+ //   client_secret = var.spnkvsecret
+ // }
   
     default_node_pool {
           name            = "default"
