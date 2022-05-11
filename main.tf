@@ -1,15 +1,15 @@
 terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "=2.63.0"
-    }
   backend = "azurerm" {
     resource_group_name = "TfstateRG01"
     storage_account_name = "tfstatestoraccount"
     container_name = "tfstate"
     key = "terraform.tfstate"   // name of any file to be created under container
   }
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=2.63.0"
+    }
   }
 }
 
