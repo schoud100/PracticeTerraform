@@ -16,28 +16,22 @@ stages :
       continueOnError: false
       steps:
       - task: TerraformInstaller@0
-        displayName: 'validate'
         inputs:
-          terraformVersion: '0.13.3'
-
-      - task: TerraformTaskV1@0
-        displayName: 'init'
+          terraformVersion: 'latest'
+      - task: TerraformTaskV2@2
         inputs:
           provider: 'azurerm'
           command: 'init'
-          backendServiceArm: 'Visual Studio Professional Subscription(5cecbbaa-a38e-4827-8324-30600cfe4b44)'
+          backendServiceArm: 'Visual Studio Professional Subscription(1)(5cecbbaa-a38e-4827-8324-30600cfe4b44)'
           backendAzureRmResourceGroupName: 'TfstateRG01'
           backendAzureRmStorageAccountName: 'tfstatestoraccount'
           backendAzureRmContainerName: 'tfstate'
           backendAzureRmKey: 'terraform.tfstate'
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
-
-      - task: TerraformTaskV1@0
-        displayName: 'validate'
+      - task: TerraformTaskV2@2
         inputs:
           provider: 'azurerm'
           command: 'validate'
-          
+
   - stage: plan
     dependsOn: [init]
     condition: succeeded('init')
@@ -46,25 +40,22 @@ stages :
         steps:
               - checkout: self
               - task: TerraformInstaller@0
-                displayName: 'install'
                 inputs:
-                  terraformVersion: '0.13.3'
-              - task: TerraformTaskV1@0
-                displayName: 'init'
+                  terraformVersion: 'latest'
+              
+              - task: TerraformTaskV2@2
                 inputs:
                   provider: 'azurerm'
                   command: 'init'
-                  backendServiceArm: 'Visual Studio Professional Subscription(5cecbbaa-a38e-4827-8324-30600cfe4b44)'
+                  backendServiceArm: 'Visual Studio Professional Subscription(1)(5cecbbaa-a38e-4827-8324-30600cfe4b44)'
                   backendAzureRmResourceGroupName: 'TfstateRG01'
                   backendAzureRmStorageAccountName: 'tfstatestoraccount'
                   backendAzureRmContainerName: 'tfstate'
                   backendAzureRmKey: 'terraform.tfstate'
-                  workingDirectory: '$(System.DefaultWorkingDirectory)'
-              - task: TerraformTaskV1@0
-                displayName: 'plan'
+
+              - task: TerraformTaskV2@2
                 inputs:
                   provider: 'azurerm'
                   command: 'plan'
-                  commandOptions: '-input=false -var-file="$(Environment).tfvars"'
-                  environmentServiceNameAzureRM: 'terraform'
-                  workingDirectory: '$(System.DefaultWorkingDirectory)'
+                  commandOptions: '-input=false -var-file="$(Environment).tfvars'
+                  environmentServiceNameAzureRM: 'Visual Studio Professional Subscription(1)(5cecbbaa-a38e-4827-8324-30600cfe4b44)'
