@@ -58,5 +58,4 @@ stages :
                 inputs:
                   provider: 'azurerm'
                   command: 'plan'
-                  commandOptions: '-input=false -var-file="$(Environment).tfvars'
                   environmentServiceNameAzureRM: 'Visual Studio Professional Subscription(1)(5cecbbaa-a38e-4827-8324-30600cfe4b44)'
