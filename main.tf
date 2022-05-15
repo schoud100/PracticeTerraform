@@ -112,7 +112,7 @@ data "azurerm_key_vault" "app_vault" {
 }
 
 data "azurerm_key_vault_secret" "ssh_public_key" {
-  name         = "aks-secret"
+  name         = "aks-secret-file"
   key_vault_id = data.azurerm_key_vault.app_vault.id
 }
 
